@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Actions\HtmlToJsonFormatter;
+use App\Services\ArchiveExtractorService;
 use App\Services\FolderCreatorService;
+use App\Services\XhtmlToJsonParser;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,7 +19,13 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
 
-        $this->app->bind(HtmlToJsonFormatter::class, FolderCreatorService::class);
+        $this->app->bind(HtmlToJsonFormatter::class, function ($app) {
+            $folder = new FolderCreatorService();
+            $archive = new ArchiveExtractorService();
+            $xmlToJson = new XhtmlToJsonParser();
+
+            return new HtmlToJsonFormatter($folder, $archive, $xmlToJson);
+        });
     }
 
     /**

@@ -22,7 +22,11 @@ class XhtmlToJsonParser
      */
     public function parse(): bool
     {
-        $this->readXtmlFile()->writeImageToJson()->writeCssToJson()->creacteJson();
+        $this->readXtmlFile()
+            ->writeImageToJson()
+            ->writeCssToJson()
+            ->creacteJson();
+
         return true;
     }
 

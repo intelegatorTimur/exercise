@@ -3,11 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Services\ArchiveExtractorService;
+use App\Actions\HtmlToJsonFormatter;
 use App\Services\FolderCreatorService;
 use App\Services\XhtmlToJsonParser;
 use Illuminate\Console\Command;
 
-class HtmlToJsonFormatter extends Command
+class HtmlToJsonFormatterCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -28,13 +29,8 @@ class HtmlToJsonFormatter extends Command
      */
 
 
-    public function handle(): bool
+    public function handle(HtmlToJsonFormatter $formatter): bool
     {
-        $folder = new FolderCreatorService();
-        $archive = new ArchiveExtractorService();
-        $xmlToJson = new XhtmlToJsonParser();
-
-        $formatter = new \App\Actions\HtmlToJsonFormatter($folder, $archive, $xmlToJson);
         $formatter->handle();
         return true;
     }
