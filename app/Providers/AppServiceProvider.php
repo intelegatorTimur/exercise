@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
 
-        $this->app->bind(HtmlToJsonFormatter::class, function ($app) {
+        $this->app->bind(HtmlToJsonFormatter::class, function () {
             $folder = new FolderCreatorService();
             $archive = new ArchiveExtractorService();
             $xmlToJson = new XhtmlToJsonParser();

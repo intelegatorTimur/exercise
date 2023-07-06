@@ -33,7 +33,11 @@ class ArchiveExtractorService
      */
     public function move(string $name): bool
     {
-        $this->moveXhtml($name)->moveImages($name)->moveCss($name)->deleteArchiveTempFiles($name);
+        $this->moveXhtml($name)
+            ->moveImages($name)
+            ->moveCss($name)
+            ->deleteArchiveTempFiles($name);
+
         return true;
     }
 
