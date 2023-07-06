@@ -8,6 +8,8 @@ use ZanySoft\Zip\Zip;
 
 class ArchiveExtractorService
 {
+    public const FILE_CHAPTER_NAME = 'Chapter_1.xhtml';
+
     /**
      * @param string $name
      * @return $this
@@ -49,7 +51,7 @@ class ArchiveExtractorService
     {
         \File::move(
             storage_path() . '/temp/' . $name . '/test/PHP_backend/Chapter_1.xhtml',
-            storage_path() . '/' . FolderCreatorService::PROJECT_NAME . '/Chapter_1.xhtml'
+            storage_path() . '/' . FolderCreatorService::PROJECT_NAME . '/' . self::FILE_CHAPTER_NAME
         );
 
         return $this;

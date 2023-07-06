@@ -33,7 +33,7 @@ class HtmlToJsonFormatter
             $this->archiveExtractor->extract('task')->move('task');
             $this->xhtmlToJsonParser->parse();
         } catch (\Exception $exception) {
-            echo $exception->getMessage('Oops, something goes wrong!');
+            echo $exception->getMessage();
         }
 
         return true;

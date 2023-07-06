@@ -6,7 +6,7 @@ use gymadarasz\xparser\XNode;
 
 class XhtmlToJsonParser
 {
-    private const Parse = 'parse.json';
+    private const PARSE = 'parse.json';
 
     public string $dataXhtml;
     public array $data;
@@ -35,9 +35,9 @@ class XhtmlToJsonParser
      */
     private function creacteJson()
     {
-        if (!\File::exists(storage_path() . '/' . self::Parse)) {
+        if (!\File::exists(storage_path() . '/' . self::PARSE)) {
             $json = json_encode($this->data);
-            \File::put(storage_path() . '/' . self::Parse, $json);
+            \File::put(storage_path() . '/' . self::PARSE, $json);
         }
         return $this;
     }
@@ -47,7 +47,7 @@ class XhtmlToJsonParser
      */
     public function readXtmlFile()
     {
-        $dataXhtml = file_get_contents(storage_path() . '/' . FolderCreatorService::PROJECT_NAME . '/Chapter_1.xhtml');
+        $dataXhtml = file_get_contents(storage_path() . '/' . FolderCreatorService::PROJECT_NAME . '/'.ArchiveExtractorService::FILE_CHAPTER_NAME);
         $this->dataXhtml = $dataXhtml;
         return $this;
     }
