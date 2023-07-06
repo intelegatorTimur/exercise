@@ -28,9 +28,14 @@ class HtmlToJsonFormatter
      */
     public function handle(): bool
     {
-        $this->folderCreator->create();
-        $this->archiveExtractor->extract('task')->move('task');
-        $this->xhtmlToJsonParser->parse();
+        try {
+            $this->folderCreator->create();
+            $this->archiveExtractor->extract('task')->move('task');
+            $this->xhtmlToJsonParser->parse();
+        } catch (\Exception $exception) {
+            echo $exception->getMessage('Oops, something goes wrong!');
+        }
+
         return true;
     }
 

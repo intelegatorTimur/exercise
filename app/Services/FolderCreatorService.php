@@ -8,19 +8,7 @@ class FolderCreatorService
     public const IMAGES = 'images';
     public const STYLE_IMAGES = 'styleImages';
 
-    /**
-     * @return bool
-     */
     public function create(): bool
-    {
-        $this->checkExistance();
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    private function checkExistance(): bool
     {
         $pathStorageNameProject = storage_path() . '/' . self::PROJECT_NAME;
         $pathStorageImages = storage_path() . '/' . self::PROJECT_NAME . '/' . self::IMAGES;
