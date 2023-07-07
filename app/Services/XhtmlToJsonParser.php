@@ -12,6 +12,7 @@ class XhtmlToJsonParser implements XhtmlToJsonInterface
     public string $dataXhtml;
     public array $data;
     public \DOMDocument $dom;
+    public array $textParse = ['span', 'p', 'div', 'em'];
 
     public function __construct()
     {
@@ -24,6 +25,7 @@ class XhtmlToJsonParser implements XhtmlToJsonInterface
     public function parse(): bool
     {
         $this->readXtmlFile()
+            ->writeTextToJson()
             ->writeImageToJson()
             ->writeCssToJson()
             ->createJson();
@@ -52,6 +54,27 @@ class XhtmlToJsonParser implements XhtmlToJsonInterface
             storage_path() . '/' . FolderCreatorService::PROJECT_NAME . '/' . ArchiveExtractorService::FILE_CHAPTER_NAME
         );
         $this->dataXhtml = $dataXhtml;
+        return $this;
+    }
+
+    /**
+     * @return XhtmlToJsonParser
+     */
+    public function writeTextToJson(): XhtmlToJsonParser
+    {
+        foreach ($this->textParse as $item) {
+            $tags = $this->getTags($item);
+            foreach ($tags as $child) {
+                if (strlen($child->nodeValue) <= 3000) {
+                    $this->data['blocks'][] = [
+                        'blockId' => \Str::uuid()->toString(),
+                        'html'    => $child->nodeValue
+                    ];
+                }
+            }
+        }
+
+
         return $this;
     }
 
@@ -101,8 +124,7 @@ class XhtmlToJsonParser implements XhtmlToJsonInterface
     public function getTags(string $tag): \DOMNodeList
     {
         $this->dom->loadXML($this->dataXhtml);
-        $tags = $this->dom->getElementsByTagName($tag);
-        return $tags;
+        return $this->dom->getElementsByTagName($tag);
     }
 
 

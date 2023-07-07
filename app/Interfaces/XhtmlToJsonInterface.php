@@ -24,6 +24,8 @@ interface XhtmlToJsonInterface
     /**
      * @return XhtmlToJsonParser
      */
+    public function writeTextToJson(): XhtmlToJsonParser;
+
     public function writeImageToJson(): XhtmlToJsonParser;
 
     /**
