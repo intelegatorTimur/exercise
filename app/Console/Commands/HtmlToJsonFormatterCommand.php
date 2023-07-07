@@ -32,7 +32,8 @@ class HtmlToJsonFormatterCommand extends Command
 
     public function handle(HtmlToJsonInterface $htmlToJsonProvider): bool
     {
-        $htmlToJsonProvider->handle();
+        echo ($htmlToJsonProvider->handle()) ? "Success!" : "Not work!";
+
         return true;
     }
 }

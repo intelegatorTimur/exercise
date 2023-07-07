@@ -13,7 +13,7 @@ class ArchiveExtractorService implements ArchiveExtractorInterface
     public const TEMP_DIRECTORY = 'temp';
     public const PHP_BACKEND_DIRECTORY = '/test/PHP_backend/';
     public const CHAPTER_DIRECTORY = 'images/Chapter_1';
-    public const CSS_DIRECTORY = 'images/Chapter_1';
+    public const CSS_DIRECTORY = 'css';
 
     /**
      * @param string $name
