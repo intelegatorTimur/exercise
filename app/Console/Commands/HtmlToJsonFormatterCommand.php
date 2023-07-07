@@ -16,7 +16,7 @@ class HtmlToJsonFormatterCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:json';
+    protected $signature = 'parse:json';
 
     /**
      * The console command description.
