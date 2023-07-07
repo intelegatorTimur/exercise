@@ -3,9 +3,6 @@
 namespace App\Services;
 
 use App\Interfaces\ArchiveExtractorInterface;
-use phpDocumentor\Reflection\Types\This;
-use VIPSoft\Unzip\Unzip;
-use ZanySoft\Zip\Zip;
 
 class ArchiveExtractorService implements ArchiveExtractorInterface
 {

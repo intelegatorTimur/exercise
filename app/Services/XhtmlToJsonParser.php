@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Interfaces\XhtmlToJsonInterface;
-use gymadarasz\xparser\XNode;
 
 class XhtmlToJsonParser implements XhtmlToJsonInterface
 {
