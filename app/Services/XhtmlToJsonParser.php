@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
+use App\Interfaces\XhtmlToJsonInterface;
 use gymadarasz\xparser\XNode;
 
-class XhtmlToJsonParser
+class XhtmlToJsonParser implements XhtmlToJsonInterface
 {
     private const PARSE = 'parse.json';
 
@@ -25,7 +26,7 @@ class XhtmlToJsonParser
         $this->readXtmlFile()
             ->writeImageToJson()
             ->writeCssToJson()
-            ->creacteJson();
+            ->createJson();
 
         return true;
     }
@@ -33,7 +34,7 @@ class XhtmlToJsonParser
     /**
      * @return $this
      */
-    private function creacteJson()
+    public function createJson(): XhtmlToJsonParser
     {
         if (!\File::exists(storage_path() . '/' . self::PARSE)) {
             $json = json_encode($this->data);
@@ -45,9 +46,11 @@ class XhtmlToJsonParser
     /**
      * @return $this
      */
-    public function readXtmlFile()
+    public function readXtmlFile(): XhtmlToJsonParser
     {
-        $dataXhtml = file_get_contents(storage_path() . '/' . FolderCreatorService::PROJECT_NAME . '/'.ArchiveExtractorService::FILE_CHAPTER_NAME);
+        $dataXhtml = file_get_contents(
+            storage_path() . '/' . FolderCreatorService::PROJECT_NAME . '/' . ArchiveExtractorService::FILE_CHAPTER_NAME
+        );
         $this->dataXhtml = $dataXhtml;
         return $this;
     }
@@ -55,10 +58,9 @@ class XhtmlToJsonParser
     /**
      * @return $this
      */
-    private function writeImageToJson()
+    public function writeImageToJson(): XhtmlToJsonParser
     {
-        $this->dom->loadXML($this->dataXhtml);
-        $tags = $this->dom->getElementsByTagName('img');
+        $tags = $this->getTags('img');
 
         foreach ($tags as $child) {
             $this->data['images'][] = [
@@ -76,11 +78,9 @@ class XhtmlToJsonParser
     /**
      * @return $this
      */
-    private function writeCssToJson()
+    public function writeCssToJson(): XhtmlToJsonParser
     {
-        $this->dom->loadXML($this->dataXhtml);
-        $tags = $this->dom->getElementsByTagName('table');
-
+        $tags = $this->getTags('table');
         foreach ($tags as $child) {
             $content = $this->dom->saveHTML($child);
 
@@ -92,6 +92,17 @@ class XhtmlToJsonParser
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $tag
+     * @return \DOMNodeList
+     */
+    public function getTags(string $tag): \DOMNodeList
+    {
+        $this->dom->loadXML($this->dataXhtml);
+        $tags = $this->dom->getElementsByTagName($tag);
+        return $tags;
     }
 
 

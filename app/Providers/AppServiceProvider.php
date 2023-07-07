@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use App\Actions\HtmlToJsonFormatter;
+use App\Interfaces\ArchiveExtractorInterface;
+use App\Interfaces\FolderCreatorInterface;
+use App\Interfaces\HtmlToJsonInterface;
+use App\Interfaces\XhtmlToJsonInterface;
 use App\Services\ArchiveExtractorService;
 use App\Services\FolderCreatorService;
 use App\Services\XhtmlToJsonParser;
@@ -19,13 +23,10 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
 
-        $this->app->bind(HtmlToJsonFormatter::class, function () {
-            $folder = new FolderCreatorService();
-            $archive = new ArchiveExtractorService();
-            $xmlToJson = new XhtmlToJsonParser();
-
-            return new HtmlToJsonFormatter($folder, $archive, $xmlToJson);
-        });
+        $this->app->bind(ArchiveExtractorInterface::class, ArchiveExtractorService::class);
+        $this->app->bind(FolderCreatorInterface::class, FolderCreatorService::class);
+        $this->app->bind(XhtmlToJsonInterface::class, XhtmlToJsonParser::class);
+        $this->app->bind(HtmlToJsonInterface::class, HtmlToJsonFormatter::class);
     }
 
     /**

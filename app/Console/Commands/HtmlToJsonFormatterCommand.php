@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Interfaces\HtmlToJsonInterface;
 use App\Services\ArchiveExtractorService;
 use App\Actions\HtmlToJsonFormatter;
 use App\Services\FolderCreatorService;
@@ -29,9 +30,9 @@ class HtmlToJsonFormatterCommand extends Command
      */
 
 
-    public function handle(HtmlToJsonFormatter $formatter): bool
+    public function handle(HtmlToJsonInterface $htmlToJsonProvider): bool
     {
-        $formatter->handle();
+        $htmlToJsonProvider->handle();
         return true;
     }
 }

@@ -2,26 +2,31 @@
 
 namespace App\Services;
 
+use App\Interfaces\ArchiveExtractorInterface;
 use phpDocumentor\Reflection\Types\This;
 use VIPSoft\Unzip\Unzip;
 use ZanySoft\Zip\Zip;
 
-class ArchiveExtractorService
+class ArchiveExtractorService implements ArchiveExtractorInterface
 {
     public const FILE_CHAPTER_NAME = 'Chapter_1.xhtml';
+    public const TEMP_DIRECTORY = 'temp';
+    public const PHP_BACKEND_DIRECTORY = '/test/PHP_backend/';
+    public const CHAPTER_DIRECTORY = 'images/Chapter_1';
+    public const CSS_DIRECTORY = 'images/Chapter_1';
 
     /**
      * @param string $name
      * @return $this
      */
-    public function extract(string $name)
+    public function extract(string $name): ArchiveExtractorService
     {
         $path = storage_path($name . '.zip');
         $zip = new \ZipArchive();
 
         if ($zip->open($path)) {
-            if (!\Storage::exists(storage_path() . '/temp/' . $name)) {
-                $zip->extractTo(storage_path() . '/temp/' . $name);
+            if (!\Storage::exists(storage_path() . '/' . self::TEMP_DIRECTORY . '/' . $name)) {
+                $zip->extractTo(storage_path() . '/' . self::TEMP_DIRECTORY . '/' . $name);
             }
         }
 
@@ -47,10 +52,11 @@ class ArchiveExtractorService
      * @param string $name
      * @return $this
      */
-    private function moveXhtml(string $name)
+    public function moveXhtml(string $name): ArchiveExtractorService
     {
         \File::move(
-            storage_path() . '/temp/' . $name . '/test/PHP_backend/Chapter_1.xhtml',
+            storage_path(
+            ) . '/' . self::TEMP_DIRECTORY . '/' . $name . self::PHP_BACKEND_DIRECTORY . self::FILE_CHAPTER_NAME,
             storage_path() . '/' . FolderCreatorService::PROJECT_NAME . '/' . self::FILE_CHAPTER_NAME
         );
 
@@ -61,9 +67,13 @@ class ArchiveExtractorService
      * @param string $name
      * @return $this
      */
-    private function moveImages(string $name)
+    public function moveImages(string $name): ArchiveExtractorService
     {
-        $fileFromImages = \File::files(storage_path() . '/temp/' . $name . '/test/PHP_backend/images/Chapter_1');
+        $fileFromImages = \File::files(
+            storage_path(
+            ) . '/' . self::TEMP_DIRECTORY . '/' . $name . self::PHP_BACKEND_DIRECTORY . self::CHAPTER_DIRECTORY
+
+        );
         foreach ($fileFromImages as $fileFromImage) {
             \File::move(
                 $fileFromImage->getPathname(),
@@ -81,9 +91,12 @@ class ArchiveExtractorService
      * @param string $name
      * @return $this
      */
-    private function moveCss(string $name)
+    public function moveCss(string $name): ArchiveExtractorService
     {
-        $fileFromImages = \File::files(storage_path() . '/temp/' . $name . '/test/PHP_backend/css');
+        $fileFromImages = \File::files(
+            storage_path(
+            ) . '/' . self::TEMP_DIRECTORY . '/' . $name . self::PHP_BACKEND_DIRECTORY . self::CSS_DIRECTORY
+        );
         foreach ($fileFromImages as $fileFromImage) {
             \File::move(
                 $fileFromImage->getPathname(),
@@ -101,9 +114,9 @@ class ArchiveExtractorService
      * @param string $name
      * @return $this
      */
-    private function deleteArchiveTempFiles(string $name)
+    public function deleteArchiveTempFiles(string $name): ArchiveExtractorService
     {
-        \File::deleteDirectory(storage_path() . '/temp/' . $name);
+        \File::deleteDirectory(storage_path() . '/' . self::TEMP_DIRECTORY . '/' . $name);
         return $this;
     }
 

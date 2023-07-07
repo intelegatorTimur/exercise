@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
-class FolderCreatorService
+use App\Interfaces\FolderCreatorInterface;
+
+class FolderCreatorService implements FolderCreatorInterface
 {
     public const PROJECT_NAME = 'name_project';
     public const IMAGES = 'images';

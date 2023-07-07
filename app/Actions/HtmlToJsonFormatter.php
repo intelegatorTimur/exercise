@@ -2,21 +2,22 @@
 
 namespace App\Actions;
 
-use App\Services\ArchiveExtractorService;
-use App\Services\FolderCreatorService;
-use App\Services\XhtmlToJsonParser;
+use App\Interfaces\ArchiveExtractorInterface;
+use App\Interfaces\FolderCreatorInterface;
+use App\Interfaces\HtmlToJsonInterface;
+use App\Interfaces\XhtmlToJsonInterface;
 
-class HtmlToJsonFormatter
+class HtmlToJsonFormatter implements HtmlToJsonInterface
 {
 
-    private FolderCreatorService $folderCreator;
-    private ArchiveExtractorService $archiveExtractor;
-    private XhtmlToJsonParser $xhtmlToJsonParser;
+    private FolderCreatorInterface $folderCreator;
+    private ArchiveExtractorInterface $archiveExtractor;
+    private XhtmlToJsonInterface $xhtmlToJsonParser;
 
     public function __construct(
-        FolderCreatorService $folderCreator,
-        ArchiveExtractorService $archiveExtractor,
-        XhtmlToJsonParser $xhtmlToJsonParser,
+        FolderCreatorInterface $folderCreator,
+        ArchiveExtractorInterface $archiveExtractor,
+        XhtmlToJsonInterface $xhtmlToJsonParser,
     ) {
         $this->folderCreator = $folderCreator;
         $this->archiveExtractor = $archiveExtractor;
@@ -34,6 +35,7 @@ class HtmlToJsonFormatter
             $this->xhtmlToJsonParser->parse();
         } catch (\Exception $exception) {
             echo $exception->getMessage();
+            return true;
         }
 
         return true;
